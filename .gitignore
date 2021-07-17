@@ -1,0 +1,6 @@
+# Debug
+bin/Debug
+obj/Debug
+
+# Compilation outputs
+*.o
