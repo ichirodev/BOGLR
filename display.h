@@ -78,7 +78,6 @@ class Display {
         bool m_isClosed;
 
         Display(const Display& other) {}
-        //Display& operator=(const Display& other) {}
 };
 
 #endif // DISPLAY_H

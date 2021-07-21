@@ -1,9 +1,15 @@
+// VISIT THE FOLLOWING SITES FOR MORE INFORMATION ON...
+//          VAOs, VBOs, Vertex and Fragment Shaders: https://www.khronos.org/opengl/wiki/Tutorial2:_VAOs,_VBOs,_Vertex_and_Fragment_Shaders_(C_/_SDL)
+// ------------------------------------------------------------------------------------------------------------------------------------------------------
+// Important reminder: The shader pipeline behaves as follows: Vertex Shaders -> Geometry Shaders -> (Rasterizing Engine) -> Fragment Shaders. 
+
 #pragma once
 
 #include <string>
 #include <GL/glew.h>
 #include <fstream>
 #include <iostream>
+
 
 static std::string LoadShader(const std::string& fileName) {
     std::ifstream file;
