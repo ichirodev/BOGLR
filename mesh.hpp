@@ -6,15 +6,21 @@
 
 #include <glm/glm.hpp>
 #include <GL/glew.h>
+#include <vector>
 
 class Vertex {
     public:
-        Vertex(const glm::vec3& pos) {
+        Vertex(const glm::vec3& pos, const glm::vec2& textCoord) {
             this->pos = pos;
+            this->textCoord = textCoord;
         }
+
+        inline glm::vec3* GetPos() { return &pos; }
+        inline glm::vec2* GetTextCoord() { return &textCoord; }
 
     private:
         glm::vec3 pos;
+        glm::vec2 textCoord;
 };
 
 class Mesh {
@@ -26,15 +32,26 @@ class Mesh {
             glGenVertexArrays(1, &m_vertexArrayObject);
             glBindVertexArray(m_vertexArrayObject);
             
-            //// Pass data to the GPU
+            std::vector<glm::vec3> positions;
+            std::vector<glm::vec2> textCoords;
+
+            positions.reserve(numVertices);
+            textCoords.reserve(numVertices);
+
+            for (unsigned int i = 0; i < numVertices; i++) {
+                positions.push_back(*vertices[i].GetPos());
+                textCoords.push_back(*vertices[i].GetTextCoord());
+            }
+
+            //// Pass vertex data to the GPU
             // Generate the buffers to store data
             glGenBuffers(NUM_BUFFERS, m_vertexArrayBuffers);
             // Bind (prepare) array of buffers
             glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[POSITION_VB]);
             // Buffers given data
             glBufferData(GL_ARRAY_BUFFER,
-                        numVertices * sizeof(vertices[0]),
-                        vertices, GL_STATIC_DRAW /* Use STATIC_DRAW when the data store contents will be modified once and used many times. */);
+                        numVertices * sizeof(positions[0]),
+                        &positions[0], GL_STATIC_DRAW /* Use STATIC_DRAW when the data store contents will be modified once and used many times. */);
             
             glEnableVertexAttribArray(0);
 
@@ -46,6 +63,15 @@ class Mesh {
             //        GLsizei stride,
             //        const GLvoid * pointer);
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+            /// Pass texture data to the GPU
+            glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[TEXTCOORD_VB]);
+            glBufferData(GL_ARRAY_BUFFER,
+                        numVertices * sizeof(textCoords[0]),
+                        &textCoords[0], GL_STATIC_DRAW);
+            
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
             glBindVertexArray(0);
         }
@@ -68,6 +94,7 @@ class Mesh {
 
         enum {
             POSITION_VB,
+            TEXTCOORD_VB,
             NUM_BUFFERS
         };
 
