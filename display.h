@@ -16,6 +16,9 @@ class Display {
          * @param   title   Title for the new window
          */
         Display(int width, int height, const std::string& title)   {
+            displayWidth = width;
+            displayHeight = height;
+            
             SDL_Init(SDL_INIT_EVERYTHING);
 
             SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -70,8 +73,13 @@ class Display {
         bool isClosed() {
             return m_isClosed;
         }
+
+        inline int GetWidth() const { return displayWidth; }
+        inline int GetHeight() const { return displayHeight; }
     
     private:
+        int displayWidth;
+        int displayHeight;
         SDL_Window* m_window;
         SDL_GLContext m_glcontext;
 

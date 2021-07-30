@@ -10,6 +10,7 @@
 #include <fstream>
 #include <iostream>
 #include "transform.hpp"
+#include "camera.hpp"
 
 static std::string LoadShader(const std::string& fileName) {
     std::ifstream file;
@@ -101,8 +102,8 @@ class Shader {
            glUseProgram(m_program); 
         }
 
-        void Update(const Transform& transform) {
-            glm::mat4 model = transform.GetModel();
+        void Update(const Transform& transform, const Camera& camera) {
+            glm::mat4 model = camera.GetViewProjection() * transform.GetModel();
             glUniformMatrix4fv(m_uniforms[TRANSFORM_U], 1, GL_FALSE, &model[0][0]);
         }
 
