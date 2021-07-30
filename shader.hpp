@@ -9,7 +9,7 @@
 #include <GL/glew.h>
 #include <fstream>
 #include <iostream>
-
+#include "transform.hpp"
 
 static std::string LoadShader(const std::string& fileName) {
     std::ifstream file;
@@ -93,10 +93,17 @@ class Shader {
 
             glValidateProgram(m_program);
             CheckShaderError(m_program, GL_VALIDATE_STATUS, true, "Error: Shader program is invalid");
+        
+            m_uniforms[TRANSFORM_U] = glGetUniformLocation(m_program, "transform");
         }
 
         void Bind() {
            glUseProgram(m_program); 
+        }
+
+        void Update(const Transform& transform) {
+            glm::mat4 model = transform.GetModel();
+            glUniformMatrix4fv(m_uniforms[TRANSFORM_U], 1, GL_FALSE, &model[0][0]);
         }
 
         virtual ~Shader() {
@@ -116,4 +123,11 @@ class Shader {
 
         GLuint m_program;
         GLuint m_shaders[NUM_SHADERS];
+
+        enum {
+            TRANSFORM_U,
+            NUM_UNIFORMS
+        };
+        GLuint m_uniforms[NUM_UNIFORMS];
+
 };

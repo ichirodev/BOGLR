@@ -14,12 +14,17 @@ For Debian / Ubuntu:
 sudo apt-get install libsdl2-dev libglew-dev libglm-dev 
 ```
 
+For Arch / Manjaro:
+```bash
+sudo pacman -S libsdl2-dev libglew-dev libglm-dev 
+```
+
 #### Build and run
 For testing purposes and rapid review and debug the project can be compiled and run with:
 ```bash
-g++ main.cpp -o x.o -std=c++11 -lGL -lGLEW -lSDL2
+g++ main.cpp -o opengl.o -std=c++11 -lGL -lGLEW -lSDL2
 ```
-Then just run the output file named "x.o".
+Then just run the output file named "opengl.o".
 
 ---
 **Ichirodev 2021**
