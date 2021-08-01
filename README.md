@@ -1,4 +1,9 @@
+# Basic OpenGL Renderer
+---
+An OpenGL renderer written in C++, it contains basic things such Shaders support, camera, transforms, mesh and textures.
+Nothing fancy.
 
+![](triangle.gif)
 
 #### Set-up
 ##### Required libraries

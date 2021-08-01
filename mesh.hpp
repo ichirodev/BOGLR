@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <vector>
+#include <string>
 
 class Vertex {
     public:
@@ -24,9 +25,10 @@ class Vertex {
 };
 
 class Mesh {
-    public: 
-        Mesh(Vertex* vertices, unsigned int numVertices) {
-            m_drawCount = numVertices;
+    public:
+        Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices) {
+            m_drawCount = numIndices;
+            //m_drawCount = numVertices;
             
             /// Prepare Vertex Array for use
             glGenVertexArrays(1, &m_vertexArrayObject);
@@ -73,14 +75,19 @@ class Mesh {
             glEnableVertexAttribArray(1);
             glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vertexArrayBuffers[INDEX_VB]);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                        numIndices * sizeof(indices[0]),
+                        &indices[0], GL_STATIC_DRAW);
+
             glBindVertexArray(0);
         }
 
         void Draw() {
             glBindVertexArray(m_vertexArrayObject);
 
-            glDrawArrays(GL_TRIANGLES, 0, m_drawCount);
-
+            //glDrawArrays(GL_TRIANGLES, 0, m_drawCount);
+            glDrawElements(GL_TRIANGLES, m_drawCount, GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
         }
 
@@ -95,6 +102,7 @@ class Mesh {
         enum {
             POSITION_VB,
             TEXTCOORD_VB,
+            INDEX_VB,
             NUM_BUFFERS
         };
 

@@ -17,17 +17,22 @@ void TriangleBounceAroundTheScreen(float& counter, Mesh& mesh, Shader& shader, T
 
 int main(void)
 {
-    Display display(WIDTH, HEIGHT, "Ichiro\'s OpenGL Renderer"); // Display Settings
+    Display display(WIDTH, HEIGHT, "basic"); // Display Settings
 
     Shader shader("./res/basicShader"); // Add Shaders to the current program
 
     Vertex vertices[] = { Vertex(glm::vec3(-0.2, -0.2, 0), glm::vec2(0.0, 0.0)),
                           Vertex(glm::vec3(0, 0.2, 0), glm::vec2(0.5, 1.0)),
                           Vertex(glm::vec3(0.2, -0.2, 0), glm::vec2(1.0, 0.0)), }; 
+    
+    unsigned int indices[] = { 0, 1, 2 };
 
-    Mesh mesh(vertices, sizeof(vertices)/sizeof(vertices[0]));
+    Mesh mesh(vertices, sizeof(vertices)/sizeof(vertices[0]), indices, sizeof(indices)/sizeof(indices[0]));
+    
     Texture texture("./res/defaultTexture.jpg");
+
     Transform transform;
+
     float aspectRadio = (float)display.GetWidth() / (float)display.GetHeight();
     Camera camera(glm::vec3(0,0,-2), 70.0f, aspectRadio, 0.01f, 1000.0f);
 
@@ -45,9 +50,9 @@ int main(void)
 
 void TriangleBounceAroundTheScreen(float& counter, Mesh& mesh, Shader& shader, Transform& transform, Texture& texture, Camera& camera) {
     transform.GetPos().x = sinf(counter * 0.3f);
-    transform.GetRot().x = counter * 0.16f; 
+    transform.GetRot().x = counter * 0.10f; 
     transform.GetRot().y = counter * 0.4f; 
-    transform.GetRot().z = counter * 0.16f; 
+    transform.GetRot().z = counter * 0.10f; 
     shader.Bind();
     texture.Bind(0);
     shader.Update(transform, camera);
